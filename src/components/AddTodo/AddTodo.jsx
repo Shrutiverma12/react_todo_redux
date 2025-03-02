@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import TodoContext from '../../context/TodoContext';
 
-function AddTodo({ addTodos }) {
+function AddTodo() {
+  const { todos, setTodos } = useContext(TodoContext);
   const [todoText, setTodoText] = useState('');
 
   return (
@@ -12,7 +14,15 @@ function AddTodo({ addTodos }) {
       />
       <button
         onClick={() => {
-          addTodos(todoText);
+          let nextId = todos.lenght + 1;
+          setTodos([
+            ...todos,
+            {
+              id: nextId,
+              text: todoText,
+              iFinished: false,
+            },
+          ]);
           setTodoText('');
         }}
       >
