@@ -4,8 +4,9 @@ import AddTodo from './components/AddTodo/AddTodo';
 import TodoList from './components/TodoList/TodoList';
 // import TodoContext from './context/TodoContext';
 // import TodoReducer from './reducer/TodoReducer';
-import { Provider } from 'react-redux';
-import store from './store';
+import { useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addTodo, deleteTodo, editTodo, finishTodo } from './slice/TodoSlice';
 
 function App() {
   // const [todos, setTodos] = useState([
@@ -16,14 +17,28 @@ function App() {
 
   //const [todos, dispatch] = useReducer(TodoReducer, []);
 
+  const dispatch = useDispatch();
+
+  const actions = bindActionCreators(
+    {
+      addTodo,
+      deleteTodo,
+      editTodo,
+      finishTodo,
+    },
+    dispatch
+  );
+
   return (
     <>
-      <Provider store={store}>
-        {/* <TodoContext.Provider value={{ todos, dispatch }}> */}
-        <AddTodo />
-        <TodoList />
-        {/* </TodoContext.Provider> */}
-      </Provider>
+      {/* <TodoContext.Provider value={{ todos, dispatch }}> */}
+      <AddTodo addTodo={actions.addTodo} />
+      <TodoList
+        deleteTodo={actions.deleteTodo}
+        editTodo={actions.editTodo}
+        finishTodo={actions.finishTodo}
+      />
+      {/* </TodoContext.Provider> */}
     </>
   );
 }
